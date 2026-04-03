@@ -17,10 +17,5 @@ TEST_SIZE = 0.2
 CV_FOLDS = 8
 C_GRID_LASSO = [0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
 
-#DEFAULT_SUBSET_VARS = [
-    #'reussite_academique', 'qualite_sommeil', 'relation_prof_etudiant', 
-    #'besoins_elementaires', 'estime_de_soi', 'problem_respiratoire'
-#]
-
 DATA_URL = os.getenv("DATA_PATH", "s3://mon-bucket/stress.csv")
 LOG_FORMAT = "{asctime} - {levelname} - {message}"

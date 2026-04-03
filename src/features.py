@@ -2,7 +2,7 @@ import logging
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
-from src.config import RANDOM_STATE, TEST_SIZE
+from config import RANDOM_STATE, TEST_SIZE
 
 logger = logging.getLogger(__name__)
 
@@ -25,10 +25,6 @@ def prepare_datasets(df: pd.DataFrame, target_col: str = 'niveau_stress'):
         stratify=y, 
         random_state=RANDOM_STATE
     )
-    
-    logger.info(f"Train: {X_train.shape}, Test: {X_test.shape}")
-    logger.debug(f"Distribution Train : \n{y_train.value_counts(normalize=True)}")
-    
     return X_train, X_test, y_train, y_test, scaler
 
 def get_subset_data(X_train, X_test, variables: list):
