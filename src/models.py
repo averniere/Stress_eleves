@@ -93,12 +93,25 @@ class StressModels:
     
         return top_features
 
-    def train_tree_models(self, X_train_sub, X_test_sub):
+    def train_tree_models(self, feature_subset = None, n_top_auto = 5):
         """
-        X_train_sub, X_test_sub : base de données dans laquelle on a pré-sélectionné les variables de plus grande importance.
+        Args:
+        feature_subset (list): Liste explicite de variables (ex: ['var1', 'var2']).
+        n_top_auto (int): Si feature_subset est None, ce nombre de variables sera sélectionné automatiquement via CART.
         Entraîne CART, Random Forest et Gradient Boosting avec Fine-Tuning.
         """
         results = []
+
+        # Sélection des variables
+        if feature_subset:
+            selected_vars = feature_subset
+        
+        else : 
+            selected_vars = self.get_top_features_from_cart(self, n_top_auto)
+        
+        X_train_sub = self.X_train[selected_vars]
+        X_test_sub = self.X_test[selected_vars]
+        suffix = "_Subset" if len(selected_vars) < self.X_train.shape[1] else "_All"
         
         # Random Forest avec fine-tuning
         param_dist_rf = {
@@ -118,11 +131,12 @@ class StressModels:
         rmse_train_rf = rmse(self.y_train, predict_train_rf)
 
         results.append({
-            'model_name': 'RandomForest_Optimised',
+            'model_name': f'RandomForest_Optimized{suffix}',
             'model' : best_rf,
             'rmse_test': rmse_test_rf,
             'rmse_train' : rmse_train_rf, 
-            'params': rf_search.best_params_
+            'params': rf_search.best_params_,
+            'variables_used' : selected_vars
         })
 
         # Gradient Boosting avec fine-tuning
@@ -143,11 +157,12 @@ class StressModels:
         rmse_train_gb = rmse(self.y_train, predict_train_gb)
         
         results.append({
-            'model_name': 'GradientBoosting_Optimised',
+            'model_name': f'GradientBoosting_Optimised{suffix}',
             'model' : best_gb, 
             'rmse_test': rmse_test_gb,
             'rmse_train' : rmse_train_gb,
-            'params': gb_search.best_params_
+            'params': gb_search.best_params_,
+            'variables_used' : selected_vars
         })
         
         return results
