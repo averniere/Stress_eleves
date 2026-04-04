@@ -1,5 +1,6 @@
 import logging
 import duckdb
+import argparse
 
 from src.config import URL_RAW
 from src.features import prepare_datasets
@@ -16,13 +17,24 @@ logging.basicConfig(
     handlers=[logging.FileHandler("recording.log"), logging.StreamHandler()],
 )
 
+# ENVIRONMENT CONFIGURATION ------------------------------------------------------
+
+parser = argparse.ArgumentParser(description="Variable d'intérêt")
+parser.add_argument("--target_col", type=str, default="niveau_stress", help="Variable d'intérêt")
+args = parser.parse_args()
+
+target_col = args.target_col
+
+logging.debug(f"Valeur de l'argument n_trees: {target_col}")
+
+
 # FEATURES ENGINEERING -----------------------------------------------------------
 
 df = con.sql(f"SELECT * FROM read_parquet('{URL_RAW}')").to_df()
 
-x_train, x_test, y_train, y_test, scaler = prepare_datasets(df)
+x_train, x_test, y_train, y_test, scaler = prepare_datasets(df, target_col)
 
-# MODELS AND OUTPUTS -----------------------------------------------------------
+# MODELS AND OUTPUTS -------------------------------------------------------------
 
 sm = StressModels(x_train=x_train, y_train=y_train, x_test=x_test, y_test=y_test)
 log_models = sm.train_logistic_regression()

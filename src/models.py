@@ -31,24 +31,23 @@ class StressModels:
         logger.info("Entraînement des régressions logistiques...")
         models = {}
         # Multiclasse
-        model_multi = LogisticRegression(penalty=None, max_iter=1000, random_state=RANDOM_STATE)
+        model_multi = LogisticRegression(l1_ratio=None, max_iter=1000, random_state=RANDOM_STATE)
         model_multi.fit(self.x_train, self.y_train)
         models['Multiclasse'] = model_multi
         # OneVsRest (Référence)
-        model_ovr = OneVsRestClassifier(LogisticRegression(penalty=None, max_iter=1000, random_state=RANDOM_STATE))
+        model_ovr = OneVsRestClassifier(LogisticRegression(l1_ratio=None, max_iter=1000, random_state=RANDOM_STATE))
         model_ovr.fit(self.x_train, self.y_train)
         models['OneVsRest'] = model_ovr
         # Lasso avec Validation Croisée (Fine-tuning de C)
         model_lasso_cv = OneVsRestClassifier(
             LogisticRegressionCV(
-                penalty='l1',
                 Cs=C_GRID_LASSO,
+                l1_ratios=[1.0],
                 cv=CV_FOLDS,
                 solver='liblinear',
                 scoring='roc_auc',
                 max_iter=2000,
-                random_state=RANDOM_STATE
-            )
+                random_state=RANDOM_STATE)
         )
         model_lasso_cv.fit(self.x_train, self.y_train)
         models['Lasso_CV'] = model_lasso_cv
