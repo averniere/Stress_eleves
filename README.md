@@ -16,21 +16,21 @@ A partir d'un jeu de données anonymisées sur le stress des élèves dans le su
 Version de Python utilisée pour ce projet : `Python 3.13`
 
 ### Installation
-1. ** Cloner le dépôt**
-```git clone https://github.com/lecoqm/Stress_eleves.git
-   cd Stress_eleves ```
+1. **Cloner le dépôt**
+``git clone https://github.com/lecoqm/Stress_eleves.git
+   cd Stress_eleves ``
 2. **Installation des dépendances**
-```pip install -r requirements.txt```
+``pip install -r requirements.txt``
 ou :
-```uv sync```
+``uv sync``
 3. **Exécution du code**
-```python main.py```
+``python main.py``
 ou 
-```uv run main.py```
+``uv run main.py``
 Si l'utilisateur souhaite prendre une variable d'intérêt différente de `niveau_stress`:
-```python main.py --target_col mavariable```
+``python main.py --target_col mavariable``
 ou 
-```uv run main.py --target_col mavariable```
+``uv run main.py --target_col mavariable``
  
 ### Structure du dépôt
 - src/ : code source du projet comprenant les scripts de configuration des hyperparamètres, de pré-traitement des données, de définition des modèles, de traitement des résultats.
