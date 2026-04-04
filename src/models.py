@@ -41,11 +41,11 @@ class StressModels:
         # Lasso avec Validation Croisée (Fine-tuning de C)
         model_lasso_cv = OneVsRestClassifier(
             LogisticRegressionCV(
-                penalty='l1', 
-                Cs=C_GRID_LASSO, 
-                cv=CV_FOLDS, 
-                solver='liblinear', 
-                scoring='roc_auc', 
+                penalty='l1',
+                Cs=C_GRID_LASSO,
+                cv=CV_FOLDS,
+                solver='liblinear',
+                scoring='roc_auc',
                 max_iter=2000,
                 random_state=RANDOM_STATE
             )
@@ -54,7 +54,7 @@ class StressModels:
         models['Lasso_CV'] = model_lasso_cv
         # Log des variables sélectionnées par Lasso
         self._log_lasso_selection(model_lasso_cv)
-        
+
         return models
 
     def _log_lasso_selection(self, model_lasso):
@@ -82,11 +82,11 @@ class StressModels:
         print(f"Importances associées : {df_imp.head(n_top)['importance'].values.round(3)}")
         return top_features
 
-    def train_tree_models(self, feature_subset = None, n_top_auto = 5):
+    def train_tree_models(self, feature_subset=None, n_top_auto=5):
         '''
         Args:
         feature_subset (list): Liste explicite de variables (ex: ['var1', 'var2']).
-        n_top_auto (int): Si feature_subset est None, ce nombre de variables sera sélectionné 
+        n_top_auto (int): Si feature_subset est None, ce nombre de variables sera sélectionné
         automatiquement via CART.
         Entraîne CART, Random Forest et Gradient Boosting avec Fine-Tuning.
         '''
@@ -94,7 +94,7 @@ class StressModels:
         # Sélection des variables
         if feature_subset:
             selected_vars = feature_subset
-        else : 
+        else: 
             selected_vars = self.get_top_features_from_cart(n_top_auto)
         x_train_sub = self.x_train[selected_vars]
         x_test_sub = self.x_test[selected_vars]
@@ -116,11 +116,11 @@ class StressModels:
         rmse_train_rf = rmse(self.y_train, predict_train_rf)
         results.append({
             'model_name': f'RandomForest_Optimized{suffix}',
-            'model' : best_rf,
+            'model': best_rf,
             'rmse_test': rmse_test_rf,
-            'rmse_train' : rmse_train_rf, 
+            'rmse_train': rmse_train_rf, 
             'params': rf_search.best_params_,
-            'variables_used' : selected_vars
+            'variables_used': selected_vars
         })
         # Gradient Boosting avec fine-tuning
         param_dist_gb = {
@@ -138,10 +138,10 @@ class StressModels:
         rmse_train_gb = rmse(self.y_train, predict_train_gb)
         results.append({
             'model_name': f'GradientBoosting_Optimised{suffix}',
-            'model' : best_gb, 
+            'model': best_gb, 
             'rmse_test': rmse_test_gb,
-            'rmse_train' : rmse_train_gb,
+            'rmse_train': rmse_train_gb,
             'params': gb_search.best_params_,
-            'variables_used' : selected_vars
-        }) 
+            'variables_used': selected_vars
+        })
         return results

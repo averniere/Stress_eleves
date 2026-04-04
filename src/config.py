@@ -13,4 +13,5 @@ TEST_SIZE = 0.2
 CV_FOLDS = 8
 C_GRID_LASSO = [0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
 
+URL_RAW = "https://minio.lab.sspcloud.fr/$averniere/Stress_eleves/data/stress.parquet"
 LOG_FORMAT = "{asctime} - {levelname} - {message}"

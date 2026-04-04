@@ -1,14 +1,28 @@
-import os 
-import pandas as pd
-from src.config import DATA_URL
+import logging
+import duckdb
+
+from src.config import URL_RAW
 from src.features import prepare_datasets
 from src.models import StressModels
 from src.evaluation import plot_roc_curves_comparison, generate_performance_table
 
+con = duckdb.connect(database=":memory:")
 
-df = pd.read_csv(DATA_URL, sep=';').iloc[:, 1:]
+logging.basicConfig(
+    format="{asctime} - {levelname} - {message}",
+    style="{",
+    datefmt="%Y-%m-%d %H:%M",
+    level=logging.DEBUG,
+    handlers=[logging.FileHandler("recording.log"), logging.StreamHandler()],
+)
+
+# FEATURES ENGINEERING -----------------------------------------------------------
+
+df = con.sql(f"SELECT * FROM read_parquet('{URL_RAW}')").to_df()
 
 X_train, X_test, y_train, y_test, scaler = prepare_datasets(df)
+
+# MODELS AND OUTPUTS -----------------------------------------------------------
 
 sm = StressModels(X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test)
 log_models = sm.train_logistic_regression()
