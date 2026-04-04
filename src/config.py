@@ -4,7 +4,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TABLES_DIR = BASE_DIR / "reports" / "tables"
 FIGURES_DIR = BASE_DIR / "reports" / "figures"
 
-for folder in [LOGS_DIR, TABLES_DIR, FIGURES_DIR]:
+for folder in [TABLES_DIR, FIGURES_DIR]:
     folder.mkdir(parents=True, exist_ok=True)
 
 RANDOM_STATE = 42
