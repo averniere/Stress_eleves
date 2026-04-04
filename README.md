@@ -56,7 +56,7 @@ ou
 
 ```bash
 uv run main.py --target_col mavariable
-```bash
+```
  
 ### Structure du dépôt
 - **src/** : code source du projet comprenant les scripts de configuration des hyperparamètres, de pré-traitement des données, de définition des modèles, de traitement des résultats.
