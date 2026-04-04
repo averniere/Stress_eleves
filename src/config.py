@@ -1,8 +1,4 @@
-import os
 from pathlib import Path
-from dotenv import load_dotenv
-
-load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOGS_DIR = BASE_DIR / "logs"
@@ -17,5 +13,4 @@ TEST_SIZE = 0.2
 CV_FOLDS = 8
 C_GRID_LASSO = [0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
 
-DATA_URL = os.getenv("DATA_PATH", "s3://mon-bucket/stress.csv")
 LOG_FORMAT = "{asctime} - {levelname} - {message}"

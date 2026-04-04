@@ -1,8 +1,10 @@
+import os 
 import pandas as pd
 from src.config import DATA_URL
 from src.features import prepare_datasets
 from src.models import StressModels
 from src.evaluation import plot_roc_curves_comparison, generate_performance_table
+
 
 df = pd.read_csv(DATA_URL, sep=';').iloc[:, 1:]
 
